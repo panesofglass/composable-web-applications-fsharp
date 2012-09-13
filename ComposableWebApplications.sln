@@ -36,6 +36,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactManager.Model", "Con
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactManager.Data", "ContactManagerSample\ContactManager.Data\ContactManager.Data.csproj", "{8FC57059-4911-48D9-8374-3670F91F1511}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Information Rich Providers", "05 Information Rich Providers", "{63657637-E857-4B3D-9E5B-AE3907D8DD0E}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Rich.Data", "Rich.Data\Rich.Data.fsproj", "{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +150,16 @@ Global
 		{8FC57059-4911-48D9-8374-3670F91F1511}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8FC57059-4911-48D9-8374-3670F91F1511}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8FC57059-4911-48D9-8374-3670F91F1511}.Release|x86.ActiveCfg = Release|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,5 +175,6 @@ Global
 		{B662A092-9132-4D05-BF71-D175C07677D4} = {5AA7B05E-B375-4926-A180-020DEB4FBA84}
 		{78F50F9A-030B-4006-8A07-7E271E14305D} = {5AA7B05E-B375-4926-A180-020DEB4FBA84}
 		{F8C25007-09A3-4757-8568-B2F637F7C162} = {5AA7B05E-B375-4926-A180-020DEB4FBA84}
+		{BB4D3856-4CDC-4A99-8BC2-4FB8DF9CC04C} = {63657637-E857-4B3D-9E5B-AE3907D8DD0E}
 	EndGlobalSection
 EndGlobal
