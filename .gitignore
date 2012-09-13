@@ -3,6 +3,7 @@ bin
 obj
 packages/
 _ReSharper*
+WebFormsSharper/Web/Scripts/
 
 # mstest test results
 TestResults
