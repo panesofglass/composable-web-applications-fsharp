@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 		
-		<title>Building Composable Web Applications</title>
+		<title>F# for C# Developers</title>
 
-		<meta name="description" content="ASP.NET offers a number of composition patterns in its varied platforms. We'll discuss the various patterns available within the different frameworks, especially the extended options available in the new Web API, and how these can all be used together effectively.">
+		<meta name="description" content="F# is Microsoft's functional programming language for .NET. You may have heard about F# and wondered how it might fit in with your C#-based solutions. F# provides a powerful set of features that make working with data a breeze and that works with your existing .NET code easily. You don't have to scrap all of your existing code to replace it with F#. We'll start with a simple ASP.NET MVC web application and slowly add new features from F# to demonstrate where it can be of benefit in your projects.">
 		<meta name="author" content="Ryan Riley">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -40,183 +40,48 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section data-markdown>
-					# Building Composable Web Applications
-					## Houston Techfest 2012
+					# F# for C# Developers
 				</section>
 
 				<section data-markdown>
 					## Ryan Riley
-					* Software Developer, Logos Bible Software
 					* Blog at [wizardsofsmart.net](http://wizardsofsmart.net/)
-					* WebApiContrib Maintainer
+					* OSS: [FSharpx](http://github.com/fsharp/fsharpx), [Fracture](http://github.com/fractureio/fracture), [Frank](http://github.com/frank-fs/frank), and [WebApiContrib](http://github.com/WebApiContrib)
 					* F# MVP
 					* Run the [Community for F#](http://c4fsharp.net/) virtual user group
 				</section>
 
 				<section data-markdown>
-					## Agenda
-					1. What is "composable"?
-					1. Composition in ASP.NET
-					1. Composing ASP.NET web applications
-					1. Clients and testing
-					1. Summary and questions
+					## MVC Music Store
 
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you run the speaker notes server.
-					</aside>
-				</section>
+					Created by Jon Galloway
 
-				<section>
-					<section>
-						<h2>What is Composition?</h2>
-						<div class="image">
-							<img class="placeholder" src="http://www.dkimages.com/discover/previews/791/961370.JPG" alt="LEGO Blocks" />
-						</div>
+					Enhanced by Rob Conery
 
-						<aside class="notes">
-							In this talk, I'll focus on architectural, rather than implementation, patterns.
-						</aside>
-					</section>
-					<section>
-						<h2>Project Composition</h2>
-						<p class="fragment">Project references</p>
-						<p class="fragment">Assembly references</p>
-						<p class="fragment">NuGet packages</p>
-
-						<aside class="notes">
-							What do I mean by "composition?" There are several ways to look at this term. For starters, you probably already use Project Composition when you build web applications, no matter which framework you currently use. By this I mean that you are likely to have a project for database access and possibly another for your domain in addition to your web project. This form of composition is somewhat unique to web programming because a given page or API call never directly talks to another page or API. Instead, they interact through URLs. Therefore, you can easily go nuts and create a project-per-page or project-per-controller if you really wanted. (I don't recommend this.)
-						</aside>
-					</section>
-				</section>
-
-				<section>
-					<section>
-						<h2>Composition in ASP.NET</h2>
-						<a class="image" href="http://www.hanselman.com/blog/OneASPNETSneakPeekElegantWebFormsAndSnowballsInHell.aspx">
-							<img src="img/one-asp-net.png" alt="One ASP.NET" />
-						</a>
-					</section>
-					<section data-markdown>
-						## Composition in ASP.NET
-						1. HTML composition
-						1. File structure composition
-						1. Routing
-						1. ASP.NET event pipeline (modules and handlers)
-					</section>
-					<section data-markdown>
-						## HTML Composition in WebForms
-						1. Master pages
-						1. Pages
-						1. Controls
-					</section>
-					<section data-markdown>
-						## HTML Composition in MVC and WebPages
-						1. Layouts
-						1. Pages
-						1. Partials
-					</section>
-					<section data-markdown>
-						## File Composition
-						1. WebForms .aspx
-						1. WebPages .cshtml
-					</section>
-					<section data-markdown>
-						## Composition via Routing
-					</section>
-					<section data-markdown>
-						## Composition via the ASP.NET Event Pipeline
-					</section>
+					Extended by us
 				</section>
 
 				<section data-markdown>
-					## Composition in HTTP
-					1. URIs
-					1. Status codes
-					1. Headers
-					1. Resources
-					1. Representations (and content negotiation)
-					1. Intermediaries
+					## The Goal
 
-					<aside class="notes">
-						Intermediaries are beyond the scope of this talk, though Web API can indeed be used to create intermediaries.
-					</aside>
-				</section>
-				<section data-markdown>
-					## URIs
-				</section>
-				<section data-markdown>
-					## Status Codes
-				</section>
-				<section data-markdown>
-					## Headers
-				</section>
-				<section data-markdown>
-					## Resources
-				</section>
-				<section data-markdown>
-					## Representations
-				</section>
-				<section data-markdown>
-					## Media Type Formatters
-				</section>
-				<section data-markdown>
-					## Content Negotiation (Conneg)
-				</section>
-				<section>
-					<section data-markdown>
-						## Message Handlers
+					Add Recommendation Engine (F#)
 
-						<aside class="notes">
-							Message Handlers are core of the Web API infrastructure. The controllers you use are effectively wrapped instances of message handlers that provide model binding and action selection, among other things, to your ApiController. Hosting is also built on top of the message handler interface. While these may at first appear to be no different than IHttpModule, you gain an advantage in that you still retain access to the statically-typed HttpRequestMessage and HttpResponseMessage types, and the helpers that allow you to more easily access the message body content.
-						</aside>
-					</section>
-					<section data-markdown>
-						## [Thinktecture.IdentityModel](https://github.com/thinktecture/Thinktecture.IdentityModel.45)
+					Expose the recommendations via an API (Frank)
 
-						<aside class="notes">
-							Perhaps the best examples of message handlers are those for logging and security. Dominick Baier of Thinktecture has written a series of posts on handling authentication and authorization using message handlers, and has also written several packages available on NuGet.
-						</aside>
-					</section>
-					<section data-markdown>
-						## Route-specific MessageHandlers
+					Tie in World Bank data (Type Providers)
 
-						<aside class="notes">
-							Message handlers may not always apply to every API command in your project, so you can also specify a route-specific handler when you define your routes.
-						</aside>
-					</section>
-					<section data-markdown>
-						## [ApiRouter](https://github.com/darrelmiller/ApiRouter)
-
-						<aside class="notes">
-							While on the topic of routing, Darrel Miller created a message handler that provides a more declarative style of routing. In his sample, he demonstrates how he would use his ApiRouter to layout the github URI structure. While not useful to everyone, this hopefully demonstrates the power of message handlers much as the image formatter demonstrates the utility of media type formatters.
-						</aside>
-					</section>
+					Render a control via JavaScript (WebSharper)
 				</section>
 
 				<section data-markdown>
-					## Composition in Practice
-				</section>
-
-				<section data-markdown>
-					## What About Clients?
-				</section>
-
-				<section>
-					<section data-markdown>
-						## Reusability with HttpClient
-						1. MediaTypeFormatters
-						1. HttpMessageHandlers
-						1. [WebPacks](http://www.bizcoder.com/index.php/2012/05/30/using-nuget-to-give-web-api-that-add-service-reference-experience/)
-					</section>
-					<section data-markdown>
-						## Deserializing with Shared Formatters
-					</section>
-					<section data-markdown>
-						## Logging on the Client
-					</section>
-					<section data-markdown>
-						## Web Packs
-					</section>
+					## Learning more
+				
+					1. http://fsharp.net/
+					1. http://tryfsharp.org/
+					1. http://fssnip.net/
+					1. http://fpish.net/
+					1. http://c4fsharp.net/
+					1. http://fsharp3sample.codeplex.com/
 				</section>
 
 				<section data-markdown>
