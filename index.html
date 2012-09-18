@@ -45,43 +45,203 @@
 
 				<section data-markdown>
 					## Ryan Riley
+					* [F# MVP](https://mvp.support.microsoft.com/profile/Ryan.Riley)
 					* Blog at [wizardsofsmart.net](http://wizardsofsmart.net/)
 					* OSS: [FSharpx](http://github.com/fsharp/fsharpx), [Fracture](http://github.com/fractureio/fracture), [Frank](http://github.com/frank-fs/frank), and [WebApiContrib](http://github.com/WebApiContrib)
-					* F# MVP
-					* Run the [Community for F#](http://c4fsharp.net/) virtual user group
+					* [Community for F#](http://c4fsharp.net/) virtual user group
 				</section>
 
 				<section data-markdown>
-					## MVC Music Store
+					## Agenda
+					1. Why learn F#?
+					1. Access data with Type Providers
+					1. Render a JavaScript control with WebSharper
+					1. Expose a web API with Frank
+					1. Manage the cloud with M-Brace
+				</section>
 
-					Created by Jon Galloway
+				<section>
+					<section data-markdown>
+						## Lessons to be Learned
+						* Proper use of <acronym title="functional programming">FP</acronym> and <acronym title="object-oriented programming">OOP</acronym>
+						* Objects for state and boundary control
+						* Functions for implementation
+						* Build behaviors from smaller pieces
 
-					Enhanced by Rob Conery
+						<aside class="notes">
+							Note that building behaviors will be covered by the use of Frank and WebSharper.
+						</aside>
+					</section>
 
-					Extended by us
+					<section data-markdown>
+						## Understanding OOP
+						### Enabling asynchrony
+
+						<blockquote cite="http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en">
+							I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages ...
+							OOP to me means only messaging, local retention and protection and hiding of state-process, and extreme late-binding of all things.
+						</blockquote>
+						Alan Kay
+					</section>
+
+					<section data-markdown>
+						## Understanding FP
+
+						1. Purity -&gt; [lazy evaluation](http://blogs.msdn.com/b/ericwhite/archive/2006/10/04/fp-tutorial.aspx)
+						1. Repeatable
+						1. Focus on algorithms and data structures
+					</section>
+
+					<section data-markdown>
+						## FP + OOP
+
+						<blockquote cite="http://michaelfeathers.typepad.com/michael_feathers_blog/2012/03/tell-above-and-ask-below-hybridizing-oo-and-functional-design.html">
+							Object-orientation is better for the higher levels of a system, and functional programming is better for the lower levels.
+						</blockquote>
+						Michael Feathers
+					</section>
+
+					<section data-markdown>
+						## State at the Edges
+
+						<blockquote cite="http://lambda-the-ultimate.org/node/3619">
+							Mock objects and dependency injection are just for people who don't know math.
+						</blockquote>
+						Erik Meijer
+					</section>
+
+					<section data-markdown>
+						<h2>An exemplary object in F#</h2>
+						<pre><code contenteditable>type Message&lt;'T&gt; =
+    | Process of 'T
+    | Stop
+
+type Exemplary(target) =
+    let agent = MailboxProcessor.Start(fun inbox -&gt;
+        let state = new State()
+        let rec loop () = async {
+            let! msg = inbox.Receive()
+            match msg with
+            | Process data -&gt; 
+                // do something with the data and/or other state
+                // or pass something to the target
+                return loop()
+            | Stop -&gt; ()
+        }
+        loop ()
+    )
+    member this.Post(msg: Message&lt;'T&gt;) = agent.Post(msg)
+
+let obj = Exemplary&lt;_&gt;(target)
+obj.Post(Process "hello")</code></pre>
+					</section>
+
+					<section data-markdown>
+						<h2>Functions as data</h2>
+						<pre><code contenteditable>type Message&lt;'T&gt; = Handle of 'T -&gt; unit
+                 | Process of 'T
+                 | Stop
+
+type Exemplary&lt;'T&gt;() =
+    let agent = MailboxProcessor.Start(fun inbox -&gt;
+        let state = new State()
+        let rec loop () = async {
+            let! msg = inbox.Receive()
+            match msg with
+            | Handle f -&gt; f state; return loop()
+            | Process data -&gt; return loop()
+            | Stop -&gt; ()
+        }
+        loop ()
+    )
+    member this.Post(msg: Message&lt;'T&gt;) = agent.Post(msg)
+
+let target = Exemplary&lt;_&gt;()
+let obj = Exemplary&lt;_&gt;()
+obj.Post(Process(fun data -&gt; target.Post(Handle data)))</code></pre>
+					</section>
 				</section>
 
 				<section data-markdown>
-					## The Goal
+					## Consuming Web Services
+					1. [HttpClient](http://blogs.msdn.com/b/henrikn/archive/2012/02/16/httpclient-is-here.aspx)
+					1. Type Providers
 
-					Add Recommendation Engine (F#)
+					<aside class="notes">
+						Show the code required to access the world bank data from the HttpClient sample versus the WorldBankProvider.
+					</aside>
+				</section>
 
-					Expose the recommendations via an API (Frank)
+				<section data-markdown>
+					## Structured Documents
 
-					Tie in World Bank data (Type Providers)
+					<aside class="notes">
+						Demo use of StructuredJSON from F#x.
+					</aside>
+				</section>
 
-					Render a control via JavaScript (WebSharper)
+				<section data-markdown>
+					## Adding Album Search
+
+					1. As a reusable control
+					1. As a Web API
+
+					<aside class="notes">
+						Here we will use the ODataService type provider to allow searching Netflix movie data.
+						We could easily mix multiple providers here; but we will use just the one to keep things simple.
+					</aside>
+				</section>
+
+				<section data-markdown>
+					## Controls with WebSharper
+
+					<aside class="notes">
+						Build a simple search control using WebSharper to call the server, execute the search, and render the list of results.
+					</aside>
+				</section>
+
+				<section data-markdown>
+					## Composing Web APIs with Frank
+
+					<aside class="notes">
+						Similar to the above, but here we will use the Frank combinator library to expose the results as an API.
+						Note, this is a contrived example.
+					</aside>
+				</section>
+
+				<section>
+					<section data-markdown>
+						## Embracing the Cloud
+
+						1. F# and Map Reduce
+						1. [{m}](http://www.m-brace.net/)
+					</section>
+
+					<section data-markdown>
+						## F# and Map Reduce
+						1. [F# and Hadoop](http://blogs.msdn.com/b/carlnol/archive/2011/12/16/hadoop-streaming-and-f-mapreduce.aspx)
+						1. [MSDN article](http://msdn.microsoft.com/en-us/magazine/gg983490.aspx)
+						1. [Matt Podwysocki's blog](http://weblogs.asp.net/podwysocki/archive/2009/03/03/exploring-mapreduce-with-f.aspx)
+					</section>
+
+					<section data-markdown>
+						## M-Brace {m}
+
+						[Coming soon!](http://www.m-brace.net/)
+					</section>
 				</section>
 
 				<section data-markdown>
 					## Learning more
 				
-					1. http://fsharp.net/
-					1. http://tryfsharp.org/
-					1. http://fssnip.net/
-					1. http://fpish.net/
-					1. http://c4fsharp.net/
-					1. http://fsharp3sample.codeplex.com/
+					* http://fsharp.net/
+					* http://tryfsharp.org/
+					* http://fsharp3sample.codeplex.com/
+					* http://fssnip.net/
+					* http://fpish.net/
+					* http://c4fsharp.net/
+					* http://www.m-brace.net/
+					* http://websharper.com/
 				</section>
 
 				<section data-markdown>
