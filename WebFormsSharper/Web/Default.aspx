@@ -7,6 +7,7 @@
     <WebSharper:ScriptManager runat="server" />
   </head>
   <body>
-    <ws:SignupSequence runat="server"/>
+    <ws:SignupSequence runat="server" />
+    <ws:AlbumSearch runat="server" />
   </body>
 </html>

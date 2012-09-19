@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="ContactForms.fs" />
     <Compile Include="SignupSequence.fs" />
+    <Compile Include="Search.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -40,7 +41,13 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Rich.Data\Rich.Data.fsproj">
+      <Name>Rich.Data</Name>
+      <Project>{bb4d3856-4cdc-4a99-8bc2-4fb8df9cc04c}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="WebSharper.targets" Condition="Exists('WebSharper.targets')" />
   <Import Project="$(WEBSHARPER_HOME)/IntelliFactory.WebSharper.Sitelets.targets" />
 </Project>
