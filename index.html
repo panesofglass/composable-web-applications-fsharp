@@ -162,18 +162,68 @@ obj.Post(Process(fun data -&gt; target.Post(Handle data)))</code></pre>
 					</section>
 				</section>
 
-				<section data-markdown>
-					## Consuming Web Services
-					1. [HttpClient](http://blogs.msdn.com/b/henrikn/archive/2012/02/16/httpclient-is-here.aspx)
-					1. Type Providers
+				<section>
+					<section data-markdown>
+						## Consuming Web Services
+						1. [HttpClient](http://blogs.msdn.com/b/henrikn/archive/2012/02/16/httpclient-is-here.aspx)
+						1. Type Providers
 
-					<aside class="notes">
-						Show the code required to access the world bank data from the HttpClient sample versus the WorldBankProvider.
-					</aside>
+						<aside class="notes">
+							Show the code required to access the world bank data from the HttpClient sample versus the WorldBankProvider.
+						</aside>
+					</section>
+
+					<section data-markdown>
+						## HttpClient
+						<pre><code contenteditable>HttpClient client = new HttpClient();
+
+client.GetAsync(_address).ContinueWith(requestTask =&gt;
+{
+    HttpResponseMessage response = requestTask.Result;
+    response.EnsureSuccessStatusCode();
+    response.Content.ReadAsAsync<JsonArray>().ContinueWith(readTask =&gt;
+    {
+        foreach (var country in readTask.Result[1])
+        {
+            Console.WriteLine(&quot;{0}, {1}, {2}, {3}, {4}&quot;,
+                country.Value[&quot;name&quot;],
+                country.Value[&quot;iso2Code&quot;],
+                country.Value[&quot;capitalCity&quot;],
+                country.Value[&quot;latitude&quot;],
+                country.Value[&quot;longitude&quot;]);
+        }
+    });
+});</code></pre>
+					</section>
+					<section>
+						<h2>World Bank Provider</h2>
+						<pre><code contenteditable>// Get average university enrollment for North American countries
+let avgEnrollment =
+    [ for c in WorldBank.Regions.``North America`` do
+        yield! c.``School enrollment, tertiary (% gross)`` ]
+    |&gt; Seq.groupBy fst
+    |&gt; Seq.map (fun (y, v) -&gt; y, Seq.averageBy snd v)
+    |&gt; Array.ofSeq
+    |&gt; Array.sortBy fst
+
+// Create list of other countries that we want to plot
+let countries = 
+  [ WorldBank.Countries.``United States``, Color.DarkRed
+    WorldBank.Countries.Canada, Color.DarkGreen ]
+
+// Compare countries with EU average
+FSharpChart.Combine
+  [ yield FSharpChart.NiceLine(avgEnrollment, "NA", Color.Blue)
+    for country, clr in countries do
+      let data = country.``School enrollment, tertiary (% gross)``
+      yield FSharpChart.NiceLine(data, unbox country, clr) ]
+  |&gt; FSharpChart.NiceChart</code></pre>;
+					</section>
 				</section>
 
-				<section data-markdown>
-					## Structured Documents
+				<section>
+					<h2>Structured Documents</h2>
+					<img src="img/structured-documents.png" />
 
 					<aside class="notes">
 						Demo use of StructuredJSON from F#x.
