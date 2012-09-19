@@ -54,51 +54,79 @@
 				<section data-markdown>
 					## Agenda
 					1. Why learn F#?
+					1. Calculating with Units of Measure
 					1. Access data with Type Providers
 					1. Render a JavaScript control with WebSharper
 					1. Expose a web API with Frank
 					1. Manage the cloud with M-Brace
 				</section>
 
+				<section data-markdown>
+					## Lessons to be Learned
+					* Proper use of <acronym title="functional programming">FP</acronym> and <acronym title="object-oriented programming">OOP</acronym>
+					* Objects for state and boundary control
+					* Functions for implementation
+					* Build behaviors from smaller pieces
+
+					<aside class="notes">
+						Note that building behaviors will be covered by the use of Frank and WebSharper.
+					</aside>
+				</section>
+
+				<section data-markdown>
+					## Understanding OOP
+					### Enabling asynchrony
+
+					<blockquote cite="http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en">
+						I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages ...
+						OOP to me means only messaging, local retention and protection and hiding of state-process, and extreme late-binding of all things.
+					</blockquote>
+					Alan Kay
+				</section>
+
+				<section data-markdown>
+					## FP + OOP
+
+					<blockquote cite="http://michaelfeathers.typepad.com/michael_feathers_blog/2012/03/tell-above-and-ask-below-hybridizing-oo-and-functional-design.html">
+						Object-orientation is better for the higher levels of a system, and functional programming is better for the lower levels.
+					</blockquote>
+					Michael Feathers
+				</section>
+
+				<section data-markdown>
+					## Understanding FP
+
+					1. Purity -&gt; [lazy evaluation](http://blogs.msdn.com/b/ericwhite/archive/2006/10/04/fp-tutorial.aspx)
+					1. Repeatable
+					1. Focus on algorithms and data structures
+				</section>
+
 				<section>
 					<section data-markdown>
-						## Lessons to be Learned
-						* Proper use of <acronym title="functional programming">FP</acronym> and <acronym title="object-oriented programming">OOP</acronym>
-						* Objects for state and boundary control
-						* Functions for implementation
-						* Build behaviors from smaller pieces
+						## Less is More
+
+						<blockquote cite="http://www.altdevblogaday.com/2011/12/24/static-code-analysis/">
+							There was a paper recently that noted that all of the various code quality metrics correlated at least as strongly with code size as error rate, making code size alone give essentially the same error predicting ability.  Shrink your important code.
+						</blockquote>
+						John Carmack
+					</section>
+
+					<section data-markdown>
+						## Pattern Shift
+						* Command pattern or function?
+						* Strategy pattern or function?
+						* Composite pattern or function composition? 
+						* Chain-of-Responsibility or list of functions?
+						* State mutating or immutability?
+						* Object extensions or &quot;pipes and filters&quot;?
+
+						<a href="http://www.amazon.com/gp/product/1933988924/ref=as_li_ss_il?ie=UTF8&camp=1789&creative=390957&creativeASIN=1933988924&linkCode=as2&tag=panesofglass-20"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&ASIN=1933988924&Format=_SL160_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=panesofglass-20" ></a><img src="http://www.assoc-amazon.com/e/ir?t=panesofglass-20&l=as2&o=1&a=1933988924" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
 
 						<aside class="notes">
-							Note that building behaviors will be covered by the use of Frank and WebSharper.
+							Switch to FSI and walk through building a command vs. using a function
+							Strategy is also a good way to correlate the signature of a simple interface to that of a function.
+							Possibly work through the differences between method chaining by extension and F# piping
 						</aside>
-					</section>
-
-					<section data-markdown>
-						## Understanding OOP
-						### Enabling asynchrony
-
-						<blockquote cite="http://userpage.fu-berlin.de/~ram/pub/pub_jf47ht81Ht/doc_kay_oop_en">
-							I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages ...
-							OOP to me means only messaging, local retention and protection and hiding of state-process, and extreme late-binding of all things.
-						</blockquote>
-						Alan Kay
-					</section>
-
-					<section data-markdown>
-						## Understanding FP
-
-						1. Purity -&gt; [lazy evaluation](http://blogs.msdn.com/b/ericwhite/archive/2006/10/04/fp-tutorial.aspx)
-						1. Repeatable
-						1. Focus on algorithms and data structures
-					</section>
-
-					<section data-markdown>
-						## FP + OOP
-
-						<blockquote cite="http://michaelfeathers.typepad.com/michael_feathers_blog/2012/03/tell-above-and-ask-below-hybridizing-oo-and-functional-design.html">
-							Object-orientation is better for the higher levels of a system, and functional programming is better for the lower levels.
-						</blockquote>
-						Michael Feathers
 					</section>
 
 					<section data-markdown>
@@ -108,6 +136,13 @@
 							Mock objects and dependency injection are just for people who don't know math.
 						</blockquote>
 						Erik Meijer
+					</section>
+				</section>
+
+				<section>
+					<section>
+						<h2>OOP in F#</h2>
+						<a href="http://blogs.msdn.com/b/timng/archive/2010/04/05/f-object-oriented-programming-quick-guide.aspx">F# Quick Guides: Object Oriented Programming</a>
 					</section>
 
 					<section data-markdown>
@@ -163,10 +198,33 @@ obj.Post(Process(fun data -&gt; target.Post(Handle data)))</code></pre>
 				</section>
 
 				<section>
+					<h2>Unique Features of F#</h2>
+				</section>
+
+				<section data-markdown>
+					## Units of Measure
+					<pre><code contenteditable>// Distance, meters. 
+[&lt;Measure&gt;] type m 
+// Time, seconds. 
+[&lt;Measure&gt;] type s
+
+let genericSumUnits ( x : float&lt;&apos;u&gt;) (y: float&lt;&apos;u&gt;) = x + y
+
+let v1 = 3.1&lt;m/s&gt;
+let v2 = 2.7&lt;m/s&gt;
+let x1 = 1.2&lt;m&gt;
+let t1 = 1.0&lt;s&gt;
+
+// OK: a function that has unit consistency checking. 
+let result1 = genericSumUnits v1 v2
+// Error reported: mismatched units. 
+// Uncomment to see error. 
+// let result2 = genericSumUnits v1 x1</code></pre>
+				</section>
+
+				<section>
 					<section data-markdown>
-						## Consuming Web Services
-						1. [HttpClient](http://blogs.msdn.com/b/henrikn/archive/2012/02/16/httpclient-is-here.aspx)
-						1. Type Providers
+						## Type Providers
 
 						<aside class="notes">
 							Show the code required to access the world bank data from the HttpClient sample versus the WorldBankProvider.
@@ -231,6 +289,10 @@ FSharpChart.Combine
 				</section>
 
 				<section data-markdown>
+					## Integrating Type Providers
+				</section>
+
+				<section data-markdown>
 					## Adding Album Search
 
 					1. As a reusable control
@@ -275,9 +337,11 @@ FSharpChart.Combine
 					</section>
 
 					<section data-markdown>
-						## M-Brace {m}
+						## {m} Brace 
 
-						[Coming soon!](http://www.m-brace.net/)
+						[Sneak preview](http://www.youtube.com/watch?v=fmTagG6MNPQ&feature=plcp)
+
+						[Learn more](http://www.m-brace.net/)
 					</section>
 				</section>
 
@@ -290,8 +354,8 @@ FSharpChart.Combine
 					* http://fssnip.net/
 					* http://fpish.net/
 					* http://c4fsharp.net/
-					* http://www.m-brace.net/
 					* http://websharper.com/
+					* http://www.m-brace.net/
 				</section>
 
 				<section data-markdown>
